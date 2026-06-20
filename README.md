@@ -4,6 +4,8 @@
 
 ## Demo
 
+### API
+
 * run `uuid.New()`
   - https://uuid.syumai.dev
 * run `uuid.NewV4()`
@@ -11,3 +13,6 @@
 * run `uuid.NewV7()`
   - https://uuid.syumai.dev/v7
 
+### Web (Browser)
+
+* https://uuid-web.syumai.dev
