@@ -1,0 +1,6 @@
+go 1.27rc1
+
+use (
+	./uuidserver
+	./worker
+)
