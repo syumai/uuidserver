@@ -4,30 +4,27 @@ import (
 	"bytes"
 	"io"
 	"net/http"
+	"strconv"
 	"uuid"
 )
 
-func newUUIDReader(generator func() uuid.UUID) io.Reader {
+type UUIDHandlerFunc func() uuid.UUID
+
+func (generator UUIDHandlerFunc) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	b, _ := generator().MarshalText()
-	return bytes.NewReader(b)
+	contentLength := len(b)
+	w.Header().Set("Content-Length", strconv.Itoa(contentLength))
+	w.Header().Set("Content-Type", "text/plain")
+	r := bytes.NewReader(b)
+	io.Copy(w, r)
 }
 
 func NewHandler() http.Handler {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		io.Copy(w, newUUIDReader(uuid.New))
-	})
-	mux.HandleFunc("/v4", func(w http.ResponseWriter, req *http.Request) {
-		io.Copy(w, newUUIDReader(uuid.NewV4))
-	})
-	mux.HandleFunc("/v7", func(w http.ResponseWriter, req *http.Request) {
-		io.Copy(w, newUUIDReader(uuid.NewV7))
-	})
-	mux.HandleFunc("/nil", func(w http.ResponseWriter, req *http.Request) {
-		io.Copy(w, newUUIDReader(uuid.Nil))
-	})
-	mux.HandleFunc("/max", func(w http.ResponseWriter, req *http.Request) {
-		io.Copy(w, newUUIDReader(uuid.Max))
-	})
+	mux.Handle("/", UUIDHandlerFunc(uuid.New))
+	mux.Handle("/v4", UUIDHandlerFunc(uuid.NewV4))
+	mux.Handle("/v7", UUIDHandlerFunc(uuid.NewV7))
+	mux.Handle("/nil", UUIDHandlerFunc(uuid.Nil))
+	mux.Handle("/max", UUIDHandlerFunc(uuid.Max))
 	return mux
 }
