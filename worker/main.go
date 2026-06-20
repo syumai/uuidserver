@@ -7,5 +7,5 @@ import (
 
 func main() {
 	h := uuidserver.NewHandler()
-	workers.Serve(h) // use http.DefaultServeMux
+	workers.Serve(h)
 }
