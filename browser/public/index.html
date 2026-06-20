@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head>
+    <title>UUID generator</title>
+  </head>
+  <body>
+    <h1>UUID generator</h1>
+    <div id="buttons">
+      <button type="button" data-path="/">uuid.New()</button>
+      <button type="button" data-path="/v4">uuid.NewV4()</button>
+      <button type="button" data-path="/v7">uuid.NewV7()</button>
+      <button type="button" data-path="/nil">uuid.Nil</button>
+      <button type="button" data-path="/max">uuid.Max</button>
+    </div>
+    <pre id="result"></pre>
+    <script src="./index.mjs" type="module"></script>
+  </body>
+</html>
